@@ -6,7 +6,8 @@
             container: opt.container,
             pageNow: opt.pageNow || 1,
             pageTotal: opt.pageTotal || 20,
-            pageDisplay: opt.pageDisplay || 5
+            pageDisplay: opt.pageDisplay || 5,
+            callback: opt.callback || function(){}
         }
 
         this.config = {
@@ -105,13 +106,13 @@
             this.render();
 
             var self = this,
-            pageItem = element.byClass('.page-item', self.options.container),
-            pagePrevItem = element.byClass('.page-prev', self.options.container)[0],
-            pageNextItem = element.byClass('.page-next', self.options.container)[0],
-            pageNow = element.byClass('.now', self.options.container)[0],
-            pageTotal = element.byClass('.total', self.options.container)[0],
-            pageNumberText = element.byClass('.page-number-text', self.options.container)[0],
-            pageGotoBtn = element.byClass('.btn-page-goto', self.options.container)[0];
+                pageItem = element.byClass('.page-item', self.options.container),
+                pagePrevItem = element.byClass('.page-prev', self.options.container)[0],
+                pageNextItem = element.byClass('.page-next', self.options.container)[0],
+                pageNow = element.byClass('.now', self.options.container)[0],
+                pageTotal = element.byClass('.total', self.options.container)[0],
+                pageNumberText = element.byClass('.page-number-text', self.options.container)[0],
+                pageGotoBtn = element.byClass('.btn-page-goto', self.options.container)[0];
 
             for(var i = 0; i < pageItem.length; i += 1){
                 eventUnit.addEvent(pageItem[i], 'click', function () {
@@ -149,6 +150,8 @@
             }else if(self.pageNowNum >= self.options.pageTotal){
                 element.hide(pageNextItem);
             }
+
+            self.options.callback && self.options.callback(self.pageNowNum);
         }
     }
 

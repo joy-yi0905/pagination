@@ -28,6 +28,8 @@ a{text-decoration:none;color:#333;}
 
 <div id="page2" class="pagination"></div>
 
+<div id="content2"></div>
+
 </body>
 </html>
 
@@ -43,7 +45,10 @@ var slider2 = new pagination({
 	container : document.getElementById('page2'),
 	pageNow: 1,
 	pageTotal: 30,
-	pageDisplay: 10
+	pageDisplay: 10,
+	callback: function (pageNowNum) {
+		document.getElementById('content2').innerHTML = '这是第' + pageNowNum + '页内容！';
+	}
 });
 
 
