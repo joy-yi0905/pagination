@@ -144,9 +144,9 @@
                 element.addClass(pageItem[self.config.showIndex], "page-item-current");
             }
 
-            if(self.pageNowNum == 1){
+            if(self.pageNowNum <= 1){
                 element.hide(pagePrevItem);
-            }else if(self.pageNowNum == self.options.pageTotal){
+            }else if(self.pageNowNum >= self.options.pageTotal){
                 element.hide(pageNextItem);
             }
         }
