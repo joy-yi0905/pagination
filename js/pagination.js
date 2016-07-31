@@ -20,8 +20,40 @@
         this.init();
     };
 
+    var queryUrlPara = function() {
+        var href = window.location.href,
+            search = window.location.search,
+            searchParaArr = [],
+            urlPara = {};
+
+        if (window.location.search) {
+            searchParaArr = window.location.search.substr(1).split('&');
+        } else {
+            return urlPara;
+        }
+
+        for (var i = 0; i < searchParaArr.length; i++) {
+            var tempArr = searchParaArr[i].split('=');
+            urlPara[tempArr[0]] =  tempArr[1];
+        }
+
+        return urlPara;
+    }();
+
+    var joinUrlPara = function(urlParaObj) {
+        var urlParaStr = '?';
+
+        for (var i in urlParaObj) {
+            urlParaStr += i + '=' + urlParaObj[i] + '&';
+        }
+
+        urlParaStr = urlParaStr.replace(/\&$/, '');
+        
+        return urlParaStr;
+    };
+
     pagination.prototype = {
-        pageNowNum: parseInt(window.location.search.replace(/\?page=/g,'')) || 1,
+        pageNowNum: queryUrlPara.page/1 || 1,
         render: function () {
             var self = this,
                 pageHtml = '';
@@ -68,12 +100,20 @@
 
             self.options.container.innerHTML = pageHtml;
         },
+        setUrlPara: function() {
+            var urlPara = queryUrlPara;
+            urlPara.page = this.config.showNumCurrent;
+            window.location.search = joinUrlPara(urlPara);
+        },
+        matchNum: function (ele) {
+            ele.value = ele.value.replace(/\D+/g,'');
+        },
         gotoPage: function (ele) {
             this.config.showNumCurrent = ele.getAttribute('data-page');
             if(this.config.showNumCurrent == this.pageNowNum){
                 return;
             }
-            window.location.search = '?page=' + this.config.showNumCurrent;
+            this.setUrlPara();
         },
         jumpPage: function (ele) {
             this.config.showNumCurrent = ele.value;
@@ -83,23 +123,20 @@
                 }else if(this.config.showNumCurrent < 1){
                     this.config.showNumCurrent = 1;
                 }
-                window.location.search = '?page=' + this.config.showNumCurrent;
+                this.setUrlPara();
             }else{
                 alert('请输入页数！');
             }
         },
-        matchNum: function (ele) {
-            ele.value = ele.value.replace(/\D+/g,'');
-        },
         prevPage: function (ele) {
             this.pageNowNum -= 1;
             this.config.showNumCurrent = this.pageNowNum;
-            window.location.search = '?page=' + this.config.showNumCurrent;
+            this.setUrlPara();
         },
         nextPage: function (ele) {
             this.pageNowNum += 1;
             this.config.showNumCurrent = this.pageNowNum;
-            window.location.search = '?page=' + this.config.showNumCurrent;
+            this.setUrlPara();
         },
         init: function () {
 

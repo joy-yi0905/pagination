@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>获取和设置url参数demo页</title>
+
+</head>
+
+<body>
+
+
+</body>
+</html>
+
+<script src="js/base.js"></script>
+<script src="js/pagination.js"></script>
+<script>
+
+    var queryUrlPara = function() {
+        var href = window.location.href,
+            search = window.location.search,
+            searchParaArr = [],
+            urlPara = {};
+
+        if (window.location.search) {
+            searchParaArr = window.location.search.substr(1).split('&');
+        } else {
+            return urlPara;
+        }
+
+        for (var i = 0; i < searchParaArr.length; i++) {
+            var tempArr = searchParaArr[i].split('=');
+            urlPara[tempArr[0]] =  tempArr[1];
+        }
+
+        return urlPara;
+    }();
+
+    console.log(queryUrlPara);
+
+    queryUrlPara.page = 2;
+
+    var joinUrlPara = function(urlParaObj) {
+        var urlParaStr = '?';
+
+        for (var i in urlParaObj) {
+            urlParaStr += i + '=' + urlParaObj[i] + '&';
+        }
+
+        urlParaStr = urlParaStr.replace(/\&$/, '');
+
+        return urlParaStr;
+    };
+
+    console.log(joinUrlPara(queryUrlPara));
+
+</script>
