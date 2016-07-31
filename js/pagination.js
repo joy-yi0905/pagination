@@ -5,20 +5,20 @@
         this.options = {
             container: opt.container,
             pageNow: opt.pageNow || 1,
-            pageTotal: opt.pageTotal || 20,
+            pageTotal: opt.pageTotal || 1,
             pageDisplay: opt.pageDisplay || 5,
             callback: opt.callback || function(){}
-        }
+        };
 
         this.config = {
             showNumMin: 1,
             showNumMax: 5,
             showNumCurrent: 1,
             showIndex: 0
-        }
+        };
 
         this.init();
-    }
+    };
 
     pagination.prototype = {
         pageNowNum: parseInt(window.location.search.replace(/\?page=/g,'')) || 1,
@@ -63,7 +63,7 @@
             }
 
             pageHtml += '<a href="javascript:;" class="page-next"><span>下一页</span></a>';
-            pageHtml += '<span class="page-progress"><span class="now">'+ self.config.showNumCurrent +'</span>/<span class="total">'+ self.options.pageTotal +'</span>页</span>'
+            pageHtml += '<span class="page-progress"><span class="now">'+ self.config.showNumCurrent +'</span>/<span class="total">'+ self.options.pageTotal +'</span>页</span>';
             pageHtml += '<span class="page-goto"><input type="tel" class="page-number-text"><button class="btn btn-page-goto">跳转</button></span>';
 
             self.options.container.innerHTML = pageHtml;
@@ -75,7 +75,7 @@
             }
             window.location.search = '?page=' + this.config.showNumCurrent;
         },
-        jumpPage: function (ele) {;
+        jumpPage: function (ele) {
             this.config.showNumCurrent = ele.value;
             if(this.config.showNumCurrent){
                 if(this.config.showNumCurrent > this.options.pageTotal){
@@ -85,7 +85,7 @@
                 }
                 window.location.search = '?page=' + this.config.showNumCurrent;
             }else{
-                alert('请输入页数！')
+                alert('请输入页数！');
             }
         },
         matchNum: function (ele) {
@@ -140,20 +140,22 @@
                 self.nextPage(pageNextItem);
             });
 
-            for(var i = 0; i < pageItem.length; i += 1){
-                element.removeClass(pageItem[i], "page-item-current");
+            for(var j = 0; j < pageItem.length; j += 1){
+                element.removeClass(pageItem[j], "page-item-current");
                 element.addClass(pageItem[self.config.showIndex], "page-item-current");
             }
 
             if(self.pageNowNum <= 1){
                 element.hide(pagePrevItem);
+                element.hide(pageNextItem);
             }else if(self.pageNowNum >= self.options.pageTotal){
                 element.hide(pageNextItem);
             }
 
             self.options.callback && self.options.callback(self.pageNowNum);
+
         }
-    }
+    };
 
     window.pagination = pagination;
 })()
