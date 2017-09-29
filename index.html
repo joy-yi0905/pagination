@@ -37,17 +37,17 @@ a{text-decoration:none;color:#333;}
 <script src="js/pagination.js"></script>
 <script>
 
-    var slider = new Pagination({
-        container : document.getElementById('page'),
+    var page = new Pagination({
+        container: document.getElementById('page'),
         pageTotal: 10
     });
 
-    var slider2 = new Pagination({
-        container : document.getElementById('page2'),
+    var page2 = new Pagination({
+        container: document.getElementById('page2'),
         pageNow: 1,
         pageTotal: 30,
         pageDisplay: 10,
-        callback: function (pageNowNum) {
+        callback: function(pageNowNum) {
             document.getElementById('content2').innerHTML = '这是第' + pageNowNum + '页内容！';
         }
     });

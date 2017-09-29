@@ -55,7 +55,7 @@
     Pagination.prototype = {
         pageNowNum: queryUrlPara.page/1 || 1,
 
-        render: function () {
+        render: function() {
             var self = this,
                 pageHtml = '';
 
@@ -66,7 +66,7 @@
             self.config.showNumCurrent = self.pageNowNum;
             self.config.showIndex = self.pageNowNum - 1;
 
-            if(self.options.pageTotal > self.options.pageDisplay){
+            if (self.options.pageTotal > self.options.pageDisplay) {
             // 当前页大于显示的分页数
                 if(self.pageNowNum >= self.options.pageDisplay){
                     self.config.showNumMin = self.pageNowNum - Math.floor(self.options.pageDisplay/2);
@@ -79,19 +79,19 @@
                         self.config.showIndex = self.options.pageDisplay + (-self.options.pageTotal + self.pageNowNum) - 1;
                     }
                 }
-            }else{ // 页数小于显示数
+            } else { // 页数小于显示数
                 self.config.showNumMax = self.options.pageTotal;
             }
 
-            if(self.pageNowNum > self.options.pageTotal){
+            if (self.pageNowNum > self.options.pageTotal) {
                 self.config.showIndex = Math.min(self.options.pageDisplay, self.options.pageTotal) - 1;
                 self.config.showNumCurrent = self.options.pageTotal;
-            }else if(self.pageNowNum < 0){
+            } else if (self.pageNowNum < 0) {
                 self.config.showIndex = 0;
                 self.config.showNumCurrent = 1;
             }
 
-            for(var n = self.config.showNumMin; n < self.config.showNumMax + 1; n += 1){
+            for (var n = self.config.showNumMin; n < self.config.showNumMax + 1; n += 1) {
                 pageHtml += '<a href="javascript:;" data-page='+ n +' class="page-item"><span>'+ n +'</span></a>';
             }
 
@@ -108,11 +108,11 @@
             window.location.search = joinUrlPara(urlPara);
         },
 
-        matchNum: function (ele) {
+        matchNum: function(ele) {
             ele.value = ele.value.replace(/\D+/g,'');
         },
 
-        gotoPage: function (ele) {
+        gotoPage: function(ele) {
             this.config.showNumCurrent = ele.getAttribute('data-page');
             if(this.config.showNumCurrent == this.pageNowNum){
                 return;
@@ -120,33 +120,33 @@
             this.setUrlPara();
         },
 
-        jumpPage: function (ele) {
+        jumpPage: function(ele) {
             this.config.showNumCurrent = ele.value;
-            if(this.config.showNumCurrent){
-                if(this.config.showNumCurrent > this.options.pageTotal){
+            if (this.config.showNumCurrent) {
+                if (this.config.showNumCurrent > this.options.pageTotal) {
                     this.config.showNumCurrent = this.options.pageTotal;
-                }else if(this.config.showNumCurrent < 1){
+                } else if (this.config.showNumCurrent < 1) {
                     this.config.showNumCurrent = 1;
                 }
                 this.setUrlPara();
-            }else{
+            } else {
                 alert('请输入页数！');
             }
         },
 
-        prevPage: function (ele) {
+        prevPage: function(ele) {
             this.pageNowNum -= 1;
             this.config.showNumCurrent = this.pageNowNum;
             this.setUrlPara();
         },
 
-        nextPage: function (ele) {
+        nextPage: function(ele) {
             this.pageNowNum += 1;
             this.config.showNumCurrent = this.pageNowNum;
             this.setUrlPara();
         },
 
-        init: function () {
+        init: function() {
 
             this.render();
 
@@ -159,41 +159,46 @@
                 pageNumberText = element.byClass('.page-number-text', self.options.container)[0],
                 pageGotoBtn = element.byClass('.btn-page-goto', self.options.container)[0];
 
-            for(var i = 0; i < pageItem.length; i += 1){
-                eventUnit.addEvent(pageItem[i], 'click', function () {
+            for (var i = 0; i < pageItem.length; i += 1) {
+                eventUnit.addEvent(pageItem[i], 'click', function() {
                     self.gotoPage(this);
                 });
             }
 
             // 跳转页
-            eventUnit.addEvent(pageGotoBtn, 'click', function () {
+            eventUnit.addEvent(pageGotoBtn, 'click', function() {
                 self.jumpPage(pageNumberText);
             });
 
             // 跳转页过滤
-            eventUnit.addEvent(pageNumberText, 'keyup', function () {
+            eventUnit.addEvent(pageNumberText, 'keyup', function() {
                 self.matchNum(pageNumberText);
             });
 
             // 上一页
-            eventUnit.addEvent(pagePrevItem, 'click', function () {
+            eventUnit.addEvent(pagePrevItem, 'click', function() {
                 self.prevPage(pagePrevItem);
             });
 
             // 下一页
-            eventUnit.addEvent(pageNextItem, 'click', function () {
+            eventUnit.addEvent(pageNextItem, 'click', function() {
                 self.nextPage(pageNextItem);
             });
 
-            for(var j = 0; j < pageItem.length; j += 1){
+            for (var j = 0; j < pageItem.length; j += 1) {
                 element.removeClass(pageItem[j], "page-item-current");
                 element.addClass(pageItem[self.config.showIndex], "page-item-current");
             }
 
-            if(self.pageNowNum <= 1){
+            // 设置分页主体、上一页、下一页的隐藏
+            if (self.options.pageTotal === 0) {
+                element.hide(self.options.container);
+            } else if (self.options.pageTotal === 1) {
                 element.hide(pagePrevItem);
                 element.hide(pageNextItem);
-            }else if(self.pageNowNum >= self.options.pageTotal){
+            } else if (self.pageNowNum <= 1) {
+                element.hide(pagePrevItem);
+            } else if(self.pageNowNum >= self.options.pageTotal) {
                 element.hide(pageNextItem);
             }
 
