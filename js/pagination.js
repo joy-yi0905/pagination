@@ -1,25 +1,5 @@
 (function(){
 
-    var pagination = function (opt) {
-
-        this.options = {
-            container: opt.container,
-            pageNow: opt.pageNow || 1,
-            pageTotal: opt.pageTotal || 1,
-            pageDisplay: opt.pageDisplay || 5,
-            callback: opt.callback || function(){}
-        };
-
-        this.config = {
-            showNumMin: 1,
-            showNumMax: 5,
-            showNumCurrent: 1,
-            showIndex: 0
-        };
-
-        this.init();
-    };
-
     var queryUrlPara = function() {
         var href = window.location.href,
             search = window.location.search,
@@ -48,12 +28,33 @@
         }
 
         urlParaStr = urlParaStr.replace(/\&$/, '');
-        
+
         return urlParaStr;
     };
 
-    pagination.prototype = {
+    function Pagination(opt) {
+
+        this.options = {
+            container: opt.container,
+            pageNow: opt.pageNow || 1,
+            pageTotal: opt.pageTotal || 1,
+            pageDisplay: opt.pageDisplay || 5,
+            callback: opt.callback || function(){}
+        };
+
+        this.config = {
+            showNumMin: 1,
+            showNumMax: 5,
+            showNumCurrent: 1,
+            showIndex: 0
+        };
+
+        this.init();
+    };
+
+    Pagination.prototype = {
         pageNowNum: queryUrlPara.page/1 || 1,
+
         render: function () {
             var self = this,
                 pageHtml = '';
@@ -100,14 +101,17 @@
 
             self.options.container.innerHTML = pageHtml;
         },
+
         setUrlPara: function() {
             var urlPara = queryUrlPara;
             urlPara.page = this.config.showNumCurrent;
             window.location.search = joinUrlPara(urlPara);
         },
+
         matchNum: function (ele) {
             ele.value = ele.value.replace(/\D+/g,'');
         },
+
         gotoPage: function (ele) {
             this.config.showNumCurrent = ele.getAttribute('data-page');
             if(this.config.showNumCurrent == this.pageNowNum){
@@ -115,6 +119,7 @@
             }
             this.setUrlPara();
         },
+
         jumpPage: function (ele) {
             this.config.showNumCurrent = ele.value;
             if(this.config.showNumCurrent){
@@ -128,16 +133,19 @@
                 alert('请输入页数！');
             }
         },
+
         prevPage: function (ele) {
             this.pageNowNum -= 1;
             this.config.showNumCurrent = this.pageNowNum;
             this.setUrlPara();
         },
+
         nextPage: function (ele) {
             this.pageNowNum += 1;
             this.config.showNumCurrent = this.pageNowNum;
             this.setUrlPara();
         },
+
         init: function () {
 
             this.render();
@@ -194,5 +202,5 @@
         }
     };
 
-    window.pagination = pagination;
-})()
+    window.Pagination = Pagination;
+})();

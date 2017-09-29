@@ -37,11 +37,12 @@ a{text-decoration:none;color:#333;}
 <script src="js/pagination.js"></script>
 <script>
 
-    var slider = new pagination({
-        container : document.getElementById('page')
+    var slider = new Pagination({
+        container : document.getElementById('page'),
+        pageTotal: 10
     });
 
-    var slider2 = new pagination({
+    var slider2 = new Pagination({
         container : document.getElementById('page2'),
         pageNow: 1,
         pageTotal: 30,
